@@ -38,7 +38,9 @@ public class Contact implements Serializable {
     public void setType(Type type) {
         this.type = type;
     }
-
+    public String getTypeId () {
+        return type.getId();
+    }
     @Override
     public String toString() {
         return "Contact{" +

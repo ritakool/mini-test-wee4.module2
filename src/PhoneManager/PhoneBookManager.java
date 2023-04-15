@@ -9,21 +9,22 @@ import Phone.IPhone;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class PhoneBookManager extends Phone implements IPhone {
     private ArrayList<Contact> contacts;
-    private ArrayList<Type> types;
+//    private ArrayList<Type> types;
     private ReadFile<Contact> contactReadFile;
     private WriteFile<Contact> contactWriteFile;
-    private ReadFile<Type> typeReadFile;
-    private WriteFile<Type> typeWriteFile;
+//    private ReadFile<Type> typeReadFile;
+//    private WriteFile<Type> typeWriteFile;
     public PhoneBookManager() {
         contacts = new ArrayList<>();
-        types = new ArrayList<>();
+//        types = new ArrayList<>();
         contactReadFile = new ReadFile<Contact>("danhba.txt");
         contactWriteFile = new WriteFile<>("danhba.txt");
-        typeReadFile = new ReadFile<Type>("thuoctinh.txt");
-        typeWriteFile = new WriteFile<>("thuoctinh.txt");
+//        typeReadFile = new ReadFile<Type>("thuoctinh.txt");
+//        typeWriteFile = new WriteFile<>("thuoctinh.txt");
     }
     @Override
     public void searchPhone(String name) {
@@ -64,17 +65,34 @@ public class PhoneBookManager extends Phone implements IPhone {
         boolean check = contacts.stream().anyMatch(c -> c.getPhoneNumber().equals(contact.getPhoneNumber()));
         // liên hệ đã tồn tại.
         if (!check) contacts.add(contact);
+        System.out.println("Đã thêm liên hệ thành công.");
         contactWriteFile.write(contacts);
     }
 
     @Override
     public void removePhone(String name) {
-
-
+        boolean foundName = false;
+        int i = 0;
+        while (i < contacts.size()) {
+            if (contacts.get(i).getName().equalsIgnoreCase(name)) {
+                System.out.println(contacts.get(i));
+                foundName = true;
+            }
+            i++;
+        }
+        System.out.println("Nhập ID của liên hệ bạn muốn xóa.");
+        Scanner sc = new  Scanner(System.in);
+        String id = sc.nextLine();
+        contacts. removeIf(contact -> contact.getTypeId().equals(id));
+        System.out.println("Đã xóa thành công.");
+        if (!foundName) {
+            System.out.println("không thấy liên hệ bạn muốn xóa.");
+        }
+        contactWriteFile.write(contacts);
     }
-
     @Override
     public void updatePhone(String name, String newPhone) {
+        boolean foundUpdatePhone = false;
 
     }
 }
