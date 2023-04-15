@@ -46,7 +46,7 @@ public class Contact implements Serializable {
         return "Contact{" +
                 "name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", type=" + type +
+                ", "+ type +
                 '}';
     }
 }
