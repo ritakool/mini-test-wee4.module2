@@ -56,23 +56,20 @@ public class PhoneBookManager extends Phone implements IPhone {
     @Override
     public void insertPhone(Contact contact) {
         if (contact == null) {
-            return;
+            throw new IllegalArgumentException("Liên hệ không để trống. ");
         }
-        boolean check = false;
-        for (Contact c : contacts ) {
-            if (c.getPhoneNumber().equals(contact.getPhoneNumber())) {
-                check = true; // liên hệ đã tồn tại.
-                break;
-            }
+        if (contact.getPhoneNumber().isEmpty()) {
+            throw new IllegalArgumentException("Không để trống số điện thoại.");
         }
-        if (!check) {
-            contacts.add(contact);
-        }
+        boolean check = contacts.stream().anyMatch(c -> c.getPhoneNumber().equals(contact.getPhoneNumber()));
+        // liên hệ đã tồn tại.
+        if (!check) contacts.add(contact);
         contactWriteFile.write(contacts);
     }
 
     @Override
     public void removePhone(String name) {
+
 
     }
 
