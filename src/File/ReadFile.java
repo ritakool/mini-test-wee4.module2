@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class ReadFile<T> {
     private final String filePath;
+
     public ReadFile(String filePath) {
         this.filePath = filePath;
     }

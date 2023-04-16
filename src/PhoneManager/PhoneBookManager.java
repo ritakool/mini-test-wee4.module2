@@ -19,14 +19,18 @@ public class PhoneBookManager extends Phone implements IPhone {
     private ArrayList<Type> Type;
     private ReadFile<Contact> contactReadFile;
     private WriteFile<Contact> contactWriteFile;
-Scanner sc = new  Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
+
     public PhoneBookManager() {
         contacts = new ArrayList<>();
         contactReadFile = new ReadFile<Contact>(filePatch);
         contacts = contactReadFile.read();
         contactWriteFile = new WriteFile<>(filePatch);
     }
-    public void addType() {}
+
+    public void addType() {
+    }
+
     @Override
     public void searchPhone(String name) {
         ArrayList<Contact> foundContacts = new ArrayList<>();
@@ -57,8 +61,7 @@ Scanner sc = new  Scanner(System.in);
             for (int i = 0; i < contacts.size(); i++) {
                 System.out.println(contacts.get(i));
             }
-        }
-        else {
+        } else {
             boolean check = false;
             for (int i = 0; i < contacts.size(); i++) {
                 if (contacts.get(i).getTypeName().equals(type.getName())) {
@@ -86,12 +89,12 @@ Scanner sc = new  Scanner(System.in);
             }
         }
         if (check) {
-                System.out.println("Số điện thoại đã tồn tại");
-            } else {
-                contacts.add(contact);
-                System.out.println("Đã thêm liên hệ thành công.");
-                contactWriteFile.write(contacts);
-            }
+            System.out.println("Số điện thoại đã tồn tại");
+        } else {
+            contacts.add(contact);
+            System.out.println("Đã thêm liên hệ thành công.");
+            contactWriteFile.write(contacts);
+        }
     }
 
     @Override
@@ -99,10 +102,11 @@ Scanner sc = new  Scanner(System.in);
         searchPhone(name);
         System.out.println("Nhập ID của liên hệ bạn muốn xóa.");
         String id = sc.nextLine();
-        contacts. removeIf(contact -> contact.getTypeId().equals(id));
+        contacts.removeIf(contact -> contact.getTypeId().equals(id));
         System.out.println("Đã xóa thành công.");
         contactWriteFile.write(contacts);
     }
+
     @Override
     public void updatePhone(String name, String newPhone) {
         searchPhone(name);
@@ -127,6 +131,7 @@ Scanner sc = new  Scanner(System.in);
         }
         contactWriteFile.write(contacts);
     }
+
     public boolean checkId(String id) {
         boolean isExit = false;
         for (Contact contact : contacts) {
@@ -137,6 +142,7 @@ Scanner sc = new  Scanner(System.in);
         }
         return isExit;
     }
+
     public boolean checkNumber(String number) {
         boolean isExit = false;
         for (Contact contact : contacts) {

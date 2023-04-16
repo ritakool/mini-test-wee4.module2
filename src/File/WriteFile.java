@@ -6,9 +6,11 @@ import java.util.ArrayList;
 
 public class WriteFile<T> {
     private String filePath;
+
     public WriteFile(String filePath) {
         this.filePath = filePath;
     }
+
     public void write(ArrayList<T> objects) {
         ArrayList<T> oldData = new ArrayList<>();
 //        try {
