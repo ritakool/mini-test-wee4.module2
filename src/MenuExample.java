@@ -70,6 +70,8 @@ public class MenuExample {
                     deleteContact();
                     break;
                 case 6:
+                    System.out.println("Cập nhập liên hệ: ");
+                    updateContact();
                     break;
             }
         }

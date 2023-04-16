@@ -74,7 +74,6 @@ Scanner sc = new  Scanner(System.in);
 
     @Override
     public void insertPhone(Contact contact) {
-        contacts = contactReadFile.read();
         if (contact.getPhoneNumber().isEmpty()) {
             System.out.println("Không để trống số điện thoại.");
             return;
@@ -109,17 +108,23 @@ Scanner sc = new  Scanner(System.in);
         searchPhone(name);
         System.out.println("Nhập ID của liên hệ bạn muốn cập nhập.");
         String id = sc.nextLine();
-        while (checkNumber(newPhone)) {
-            System.out.println("Số đã tồn tại vui lòng nhập lại số mới: ");
-            newPhone = sc.nextLine();
-        }
-        for (int i =0; i < contacts.size(); i++) {
-            if (contacts.get(i).getTypeId().equals(id)) {
-                contacts.get(i).setPhoneNumber(newPhone);
-                break;
+        System.out.println("Bạn có chắc chắn muốn thay đổi số điện thoại của liên hệ này? (Y/N)");
+        String confirm = sc.nextLine();
+        if (confirm.equalsIgnoreCase("y")) {
+            while (checkNumber(newPhone)) {
+                System.out.println("Số đã tồn tại vui lòng nhập lại số mới: ");
+                newPhone = sc.nextLine();
             }
+            for (int i = 0; i < contacts.size(); i++) {
+                if (contacts.get(i).getTypeId().equals(id)) {
+                    contacts.get(i).setPhoneNumber(newPhone);
+                    break;
+                }
+            }
+            System.out.println("Đã cập nhật thành công.");
+        } else {
+            System.out.println("Không cập nhật số điện thoại của liên hệ này.");
         }
-        System.out.println("Đã cập nhật thành công.");
         contactWriteFile.write(contacts);
     }
     public boolean checkId(String id) {
