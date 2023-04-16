@@ -2,80 +2,97 @@ package PhoneManager;
 
 import Contact.Contact;
 import Contact.Type;
+
 import File.ReadFile;
 import File.WriteFile;
+
 import Phone.Phone;
 import Phone.IPhone;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
 
 public class PhoneBookManager extends Phone implements IPhone {
-    private String filePatch = "F:\\Code Gym\\Module 2\\miniTest.week4\\src\\File\\thuoctinh.txt";
+    private String filePatch = "./src/File/thuoctinh.bin";
     private ArrayList<Contact> contacts;
+    private ArrayList<Type> Type;
     private ReadFile<Contact> contactReadFile;
     private WriteFile<Contact> contactWriteFile;
 Scanner sc = new  Scanner(System.in);
     public PhoneBookManager() {
         contacts = new ArrayList<>();
-        File file = new File(filePatch);
-            if (!file.exists()) {
-               try {
-                   file.createNewFile();
-               }catch (Exception e) {
-                   e.printStackTrace();
-               }
-            }
-        contactReadFile = new ReadFile<Contact>(this.filePatch);
-        contactWriteFile = new WriteFile<>(this.filePatch);
+        contactReadFile = new ReadFile<Contact>(filePatch);
+        contacts = contactReadFile.read();
+        contactWriteFile = new WriteFile<>(filePatch);
     }
+    public void addType() {}
     @Override
     public void searchPhone(String name) {
-        contactReadFile.read();
-        boolean found = false;
-        for (int i = 0; i < contacts.size(); i++) {
-            if (contacts.get(i).getName().equalsIgnoreCase(name)) {
-                System.out.println(contacts.get(i));
-                found = true;
+        ArrayList<Contact> foundContacts = new ArrayList<>();
+        for (Contact contact : contacts) {
+            if (contact.getName().equalsIgnoreCase(name)) {
+                foundContacts.add(contact);
             }
-        } if (!found) System.out.println("Không có liên hệ nào...");
+        }
+        if (foundContacts.isEmpty()) {
+            System.out.println("Không tìm thấy liên hệ nào...");
+        } else {
+            System.out.println("Các liên hệ có tên " + name + " là:");
+            foundContacts.forEach(System.out::println);
+        }
     }
 
     @Override
     public void sort() {
-        contactReadFile.read();
         contacts.sort(Comparator.comparing(Contact::getName));
         contactWriteFile.write(contacts);
     }
 
     @Override
     public void display(Type type) {
-        contactReadFile.read();
+        contacts.clear();
+        contacts = contactReadFile.read();
         if (type == null) {
-            contacts.forEach(System.out::println);
+            for (int i = 0; i < contacts.size(); i++) {
+                System.out.println(contacts.get(i));
+            }
         }
         else {
-            contacts.stream()
-                    .filter(contact -> contact.getType().equals(type))
-                    .forEachOrdered(System.out::println);
+            boolean check = false;
+            for (int i = 0; i < contacts.size(); i++) {
+                if (contacts.get(i).getTypeName().equals(type.getName())) {
+                    System.out.println(contacts.get(i));
+                    check = true;
+                }
+            }
+            if (!check) {
+                System.out.println("không có kiểu này.");
+            }
         }
     }
 
     @Override
     public void insertPhone(Contact contact) {
-        contactReadFile.read();
-        if (contact == null) {
-            throw new IllegalArgumentException("Liên hệ không để trống. ");
-        }
+        contacts = contactReadFile.read();
         if (contact.getPhoneNumber().isEmpty()) {
-            throw new IllegalArgumentException("Không để trống số điện thoại.");
+            System.out.println("Không để trống số điện thoại.");
+            return;
         }
-        boolean check = contacts.stream().anyMatch(c -> c.getPhoneNumber().equals(contact.getPhoneNumber()));
-        if (!check) contacts.add(contact);
-        System.out.println("Đã thêm liên hệ thành công.");
-        contactWriteFile.write(contacts);
+        boolean check = false;
+        for (Contact c : contacts) {
+            if (c.getPhoneNumber().equals(contact.getPhoneNumber())) {
+                check = true;
+                break;
+            }
+        }
+        if (check) {
+                System.out.println("Số điện thoại đã tồn tại");
+            } else {
+                contacts.add(contact);
+                System.out.println("Đã thêm liên hệ thành công.");
+                contactWriteFile.write(contacts);
+            }
     }
 
     @Override
@@ -92,9 +109,14 @@ Scanner sc = new  Scanner(System.in);
         searchPhone(name);
         System.out.println("Nhập ID của liên hệ bạn muốn cập nhập.");
         String id = sc.nextLine();
+        while (checkNumber(newPhone)) {
+            System.out.println("Số đã tồn tại vui lòng nhập lại số mới: ");
+            newPhone = sc.nextLine();
+        }
         for (int i =0; i < contacts.size(); i++) {
-            if (contacts.get(i).equals(id)) {
+            if (contacts.get(i).getTypeId().equals(id)) {
                 contacts.get(i).setPhoneNumber(newPhone);
+                break;
             }
         }
         System.out.println("Đã cập nhật thành công.");
@@ -106,6 +128,15 @@ Scanner sc = new  Scanner(System.in);
             if (contact.getTypeId().equals(id)) {
                 isExit = true;
                 break;
+            }
+        }
+        return isExit;
+    }
+    public boolean checkNumber(String number) {
+        boolean isExit = false;
+        for (Contact contact : contacts) {
+            if (contact.getPhoneNumber().equals(number)) {
+                isExit = true;
             }
         }
         return isExit;

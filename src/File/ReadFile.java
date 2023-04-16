@@ -1,28 +1,26 @@
 package File;
 
-import Contact.Contact;
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class ReadFile<T> {
-    private String fileName;
-
-    public ReadFile(String fileName) {
-        this.fileName = fileName;
+    private final String filePath;
+    public ReadFile(String filePath) {
+        this.filePath = filePath;
     }
 
     public ArrayList<T> read() {
-        ArrayList<T> Contacts = new ArrayList<>();
+        ArrayList<T> data = new ArrayList<>();
         try {
-            FileInputStream fileInputStream = new FileInputStream(fileName);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            Contacts = (ArrayList<T>) objectInputStream.readObject();
-            fileInputStream.close();
-            objectInputStream.close();
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            data = (ArrayList<T>) ois.readObject();
+            fis.close();
+            ois.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return Contacts;
+        return data;
     }
 }

@@ -1,10 +1,6 @@
 import Contact.Contact;
 import Contact.Type;
-import File.ReadFile;
 import PhoneManager.PhoneBookManager;
-
-import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 public class MenuExample {
     static Scanner scanner = new Scanner(System.in);
@@ -26,9 +22,55 @@ public class MenuExample {
             int choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
+                case 0:
+                    System.out.println("cám ơn bạn đã sử dụng chương trình. ");
+                    for (int i = 1; i <= 6; i += 2) {
+                        for (int j = 1; j <= 6 - i; j += 2) {
+                            System.out.print("  ");
+                        }
+                        for (int j = 1; j <= i; j++) {
+                            System.out.print("* ");
+                        }
+                        for (int j = 1; j <= 6 - i; j++) {
+                            System.out.print("  ");
+                        }
+                        for (int j = 1; j <= i; j++) {
+                            System.out.print("* ");
+                        }
+                        System.out.println();
+                    }
+                    for (byte i = 1; i <= 6; i++) {
+
+                        for (byte j = 1; j <= i; j++) {
+                            System.out.print("  ");
+                        }
+                        for (byte j = i; j < 6; j++) {
+                            System.out.print("* ");
+                        }
+                        for (byte j = i; j <= 6; j++) {
+                            System.out.print("* ");
+                        }
+                        System.out.print("\n");
+                    }
+                    return;
+                case 1:
+                    foundContact();
+                    break;
+                case 2:
+                    sortContact();
+                    break;
+                case 3:
+                    showContact();
+                    break;
                 case 4:
                     System.out.println("Thêm liên hệ mới: ");
                     addContact();
+                    break;
+                case 5:
+                    deleteContact();
+                    break;
+                case 6:
+                    break;
             }
         }
     }
@@ -46,20 +88,24 @@ public class MenuExample {
                                           4. Thêm mới   """);
         byte choice = scanner.nextByte();
         scanner.nextLine();
-        switch (choice){
-            case 1:
-                name = "Gia đình";
-                break;
-            case 2:
-                name = "Bạn bè";
-                break;
-            case 3:
-                name = "Công ty";
-                break;
-            case 4:
-                System.out.println("Nhập tên loại liên hệ mới:");
-                name = scanner.nextLine();
-                break;
+        try {
+            switch (choice){
+                case 1:
+                    name = "Gia đình";
+                    break;
+                case 2:
+                    name = "Bạn bè";
+                    break;
+                case 3:
+                    name = "Công ty";
+                    break;
+                case 4:
+                    System.out.println("Nhập tên loại liên hệ mới:");
+                    name = scanner.nextLine();
+                    break;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         Type type = new Type(id, name);
         System.out.println("Nhập tên: ");
@@ -73,5 +119,32 @@ public class MenuExample {
         System.out.println("Nhập tên: ");
         String name = scanner.nextLine();
         phoneBookManager.searchPhone(name);
+    }
+    public static void showContact() {
+        System.out.println("nhập kiểu bạn muốn phân loại: ");
+        String Type = scanner.nextLine();
+        if (Type.trim().isEmpty()){
+            phoneBookManager.display(null);
+        } else {
+        Type type = new Type(Type);
+        phoneBookManager.display(type);
+        }
+    }
+    public static void sortContact() {
+        phoneBookManager.sort();
+        System.out.println("danh bạ sau khi sắp xếp là: ");
+        phoneBookManager.display(null);
+    }
+    public static void deleteContact() {
+        System.out.println("Nhập tên liên hệ bạn muốn xóa: ");
+        String name = scanner.nextLine();
+        phoneBookManager.removePhone(name);
+    }
+    public static void updateContact() {
+        System.out.println("Nhập tên liên hệ bạn muốn sửa đổi");
+        String name = scanner.nextLine();
+        System.out.println("Nhập số điện thoại: ");
+        String tel = scanner.nextLine();
+        phoneBookManager.updatePhone(name, tel);
     }
 }

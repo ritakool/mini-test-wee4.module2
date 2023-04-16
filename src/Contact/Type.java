@@ -10,6 +10,9 @@ public class Type implements Serializable {
         this.id = id;
         this.name = name;
     }
+    public Type(String name) {
+        this.name = name;
+    }
 
     public String getId() {
         return id;

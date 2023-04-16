@@ -41,6 +41,9 @@ public class Contact implements Serializable {
     public String getTypeId () {
         return type.getId();
     }
+    public String getTypeName() {
+        return type.getName();
+    }
     @Override
     public String toString() {
         return "Contact{" +
