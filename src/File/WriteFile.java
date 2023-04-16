@@ -12,14 +12,6 @@ public class WriteFile<T> {
     }
 
     public void write(ArrayList<T> objects) {
-        ArrayList<T> oldData = new ArrayList<>();
-//        try {
-//            ReadFile<T> data = new ReadFile<T>(filePath);
-//            oldData = data.read();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        oldData.addAll(objects);
         try {
             FileOutputStream fos = new FileOutputStream(filePath);
             ObjectOutputStream oos = new ObjectOutputStream(fos);

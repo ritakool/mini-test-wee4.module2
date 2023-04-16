@@ -153,8 +153,16 @@ public class MenuExample {
     public static void updateContact() {
         System.out.println("Nhập tên liên hệ bạn muốn sửa đổi");
         String name = scanner.nextLine();
+        while (!phoneBookManager.checkName(name)) {
+            System.out.println("tên không tồn tại, vui lòng nhập lại cho đúng: ");
+            name = scanner.nextLine();
+        }
         System.out.println("Nhập số điện thoại: ");
         String tel = scanner.nextLine();
+        while (phoneBookManager.checkNumber(tel)) {
+            System.out.println("Đã có liên hệ sử dụng số này vui lòng nhập số khác: ");
+            tel = scanner.nextLine();
+        }
         phoneBookManager.updatePhone(name, tel);
     }
 }

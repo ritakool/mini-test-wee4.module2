@@ -28,7 +28,13 @@ public class PhoneBookManager extends Phone implements IPhone {
         contactWriteFile = new WriteFile<>(filePatch);
     }
 
-    public void addType() {
+    public boolean checkName(String name) {
+        boolean check = false;
+        for (Contact contact : contacts) {
+            if (contact.getName().equalsIgnoreCase(name)) {
+                check = true;
+            }
+        } return check;
     }
 
     @Override
@@ -55,7 +61,6 @@ public class PhoneBookManager extends Phone implements IPhone {
 
     @Override
     public void display(Type type) {
-        contacts.clear();
         contacts = contactReadFile.read();
         if (type == null) {
             for (int i = 0; i < contacts.size(); i++) {
@@ -102,9 +107,15 @@ public class PhoneBookManager extends Phone implements IPhone {
         searchPhone(name);
         System.out.println("Nhập ID của liên hệ bạn muốn xóa.");
         String id = sc.nextLine();
-        contacts.removeIf(contact -> contact.getTypeId().equals(id));
-        System.out.println("Đã xóa thành công.");
-        contactWriteFile.write(contacts);
+        System.out.println("Bạn có chắc muốn xóa liên hệ này? (Y/N)");
+        String confirm = sc.nextLine();
+        if (confirm.equalsIgnoreCase("y")) {
+            contacts.removeIf(contact -> contact.getTypeId().equals(id));
+            System.out.println("Đã xóa thành công.");
+            contactWriteFile.write(contacts);
+        } else {
+            System.out.println("Không xóa liên hệ này nữa...");
+        }
     }
 
     @Override
@@ -115,13 +126,9 @@ public class PhoneBookManager extends Phone implements IPhone {
         System.out.println("Bạn có chắc chắn muốn thay đổi số điện thoại của liên hệ này? (Y/N)");
         String confirm = sc.nextLine();
         if (confirm.equalsIgnoreCase("y")) {
-            while (checkNumber(newPhone)) {
-                System.out.println("Số đã tồn tại vui lòng nhập lại số mới: ");
-                newPhone = sc.nextLine();
-            }
-            for (int i = 0; i < contacts.size(); i++) {
-                if (contacts.get(i).getTypeId().equals(id)) {
-                    contacts.get(i).setPhoneNumber(newPhone);
+            for (Contact contact : contacts) {
+                if (contact.getTypeId().equals(id)) {
+                    contact.setPhoneNumber(newPhone);
                     break;
                 }
             }
