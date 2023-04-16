@@ -10,30 +10,33 @@ public class MenuExample {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("======== DANH BẠ ĐIỆN THOẠI ========");
-            System.out.println("1. Tìm kiếm liên hệ theo tên");
-            System.out.println("2. Sắp xếp danh bạ theo tên");
-            System.out.println("3. Hiển thị danh sách liên hệ theo loại");
-            System.out.println("4. Thêm liên hệ mới");
-            System.out.println("5. Xóa liên hệ");
-            System.out.println("6. Cập nhật liên hệ");
-            System.out.println("0. Thoát chương trình");
-            System.out.println("====================================");
-            System.out.println("Nhập lựa chọn của bạn: ");
+            System.out.println("""
+                            || ========== DANH BẠ ĐIỆN THOẠI ========== ||
+                            ||1. Tìm kiếm liên hệ theo tên              ||
+                            ||2. Sắp xếp danh bạ theo tên               ||
+                            ||3. Hiển thị danh sách liên hệ theo loại   ||
+                            ||4. Thêm liên hệ mới                       ||
+                            ||5. Xóa liên hệ                            ||
+                            ||6. Cập nhật liên hệ                       ||
+                            ||0. Thoát chương trình                     ||
+                            || ======================================== ||
+                            || --------:Nhập lựa chọn của bạn:--------- || 
+                            || -------- *_*_*_*_0 -> 6_*_*_*_* -------- ||          
+                                    """);
 
             int choice = scanner.nextInt();
             scanner.nextLine();
             switch (choice) {
                 case 0:
                     System.out.println("cám ơn bạn đã sử dụng chương trình. ");
-                    for (int i = 1; i <= 6; i += 2) {
-                        for (int j = 1; j <= 6 - i; j += 2) {
+                    for (int i = 1; i <= 4; i += 2) {
+                        for (int j = 1; j <= 4 - i; j += 2) {
                             System.out.print("  ");
                         }
                         for (int j = 1; j <= i; j++) {
                             System.out.print("* ");
                         }
-                        for (int j = 1; j <= 6 - i; j++) {
+                        for (int j = 1; j <= 4 - i; j++) {
                             System.out.print("  ");
                         }
                         for (int j = 1; j <= i; j++) {
@@ -41,15 +44,15 @@ public class MenuExample {
                         }
                         System.out.println();
                     }
-                    for (byte i = 1; i <= 6; i++) {
+                    for (byte i = 1; i <= 4; i++) {
 
                         for (byte j = 1; j <= i; j++) {
                             System.out.print("  ");
                         }
-                        for (byte j = i; j < 6; j++) {
+                        for (byte j = i; j < 4; j++) {
                             System.out.print("* ");
                         }
-                        for (byte j = i; j <= 6; j++) {
+                        for (byte j = i; j <= 4; j++) {
                             System.out.print("* ");
                         }
                         System.out.print("\n");
