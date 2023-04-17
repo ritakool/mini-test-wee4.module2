@@ -84,10 +84,12 @@ public class MenuExample {
 
     public static void addContact() {
         String id;
-        do {
-            System.out.println("Nhap id: ");
+        System.out.println("Nhap ID: ");
+        id = scanner.nextLine();
+       while (phoneBookManager.checkId(id)) {
+            System.out.println("Nhập lại ID, mỗi liên hệ chỉ có 1 ID ");
             id = scanner.nextLine();
-        } while (phoneBookManager.checkId(id));
+        }
         String name = null;
         System.out.println(""" 
                 Phân loại: 1. Gia đình
@@ -96,7 +98,6 @@ public class MenuExample {
                            4. Thêm mới   """);
         byte choice = scanner.nextByte();
         scanner.nextLine();
-        try {
             switch (choice) {
                 case 1:
                     name = "Gia đình";
@@ -112,9 +113,6 @@ public class MenuExample {
                     name = scanner.nextLine();
                     break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         Type type = new Type(id, name);
         System.out.println("Nhập tên: ");
         String Name = scanner.nextLine();
